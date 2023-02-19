@@ -36,7 +36,8 @@ function App() {
       headers: myHeaders,
       redirect: 'follow',
     };
-    const query = encodeURIComponent(`${searching} in:name or in:description`);
+    const query = encodeURIComponent(`${searching} in:name in:description`);
+    console.log(`https://api.github.com/search/repositories?q=${query}&sort=${sortby}&order=${order}`)
     searching &&
       fetch(
         `https://api.github.com/search/repositories?q=${query}&sort=${sortby}&order=${order}`,
