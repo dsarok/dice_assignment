@@ -37,31 +37,32 @@ function App() {
       redirect: 'follow',
     };
     const query = encodeURIComponent(`${searching} in:name or in:description`);
-    searching&&fetch(
-      `https://api.github.com/search/repositories?q=${query}&sort=${sortby}&order=${order}`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(result => {
-        const items = result.items.map(e => ({
-          repo_name: e.full_name,
-          stars: e.stargazers_count,
-          language: e.language,
-          description: e.description,
-          avatar_url: e.owner.avatar_url,
-          score:e.score
-        }));
-        setFetchedApi(items);
-      })
-      .catch(error => console.log('error', error));
-  }, [searching, sortby,order]);
+    searching &&
+      fetch(
+        `https://api.github.com/search/repositories?q=${query}&sort=${sortby}&order=${order}`,
+        requestOptions,
+      )
+        .then(response => response.json())
+        .then(result => {
+          const items = result.items.map(e => ({
+            repo_name: e.full_name,
+            stars: e.stargazers_count,
+            language: e.language,
+            description: e.description,
+            avatar_url: e.owner.avatar_url,
+            score: e.score,
+          }));
+          setFetchedApi(items);
+        })
+        .catch(error => console.log('error', error));
+  }, [searching, sortby, order]);
   const searchBasis = [
     {value: 'stars', key: 'stars'},
     {value: 'created at', key: 'created'},
     {value: 'updated at', key: 'updated'},
     {value: 'name', key: 'name'},
     {value: 'watchers count', key: 'watchers_count'},
-    {value:'score',key:'score'}
+    {value: 'score', key: 'score'},
   ];
   return (
     <SafeAreaView>
@@ -92,10 +93,16 @@ function App() {
           }}>
           <Text style={{fontWeight: 'bold', marginRight: 5}}>Sort By</Text>
           <TouchableOpacity onPress={() => setOrder('asc')}>
-            <Chips category={'asc'} backgroundColor={order==='asc'?'grey':'white'}/>
+            <Chips
+              category={'asc'}
+              backgroundColor={order === 'asc' ? 'grey' : 'white'}
+            />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setOrder('desc')}>
-            <Chips category={'desc'} backgroundColor={order==='desc'?'grey':'white'}/>
+            <Chips
+              category={'desc'}
+              backgroundColor={order === 'desc' ? 'grey' : 'white'}
+            />
           </TouchableOpacity>
 
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
@@ -109,23 +116,45 @@ function App() {
             ))}
           </View>
         </View>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={fetchedApi}
-          ListEmptyComponent={<ActivityIndicator size={'large'} />}
-          renderItem={({item}) => {
-            return (
-              <Card
-                description={item.description}
-                repo_name={item.repo_name}
-                imageUrl={item.avatar_url}
-                stars={item.stars}
-                language={item.language}
-                score={item.score}
-              />
-            );
-          }}
-        />
+        {searching ? (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={fetchedApi}
+            keyExtractor={item => item.repo_name}
+            ListEmptyComponent={
+              searching ? (
+                <ActivityIndicator size={'large'} />
+              ) : (
+                <View
+                  style={{
+                    height: '100%',
+                    backgroundColor: 'powderblue',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text style={{fontSize: 30}}>Notihing to search on</Text>
+                </View>
+              )
+            }
+            renderItem={({item}) => {
+              return (
+                <Card
+                  description={item.description}
+                  repo_name={item.repo_name}
+                  imageUrl={item.avatar_url}
+                  stars={item.stars}
+                  language={item.language}
+                  score={item.score}
+                />
+              );
+            }}
+          />
+        ) : (
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{fontSize:24}}>Nothing To Search On 🧐</Text>
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
