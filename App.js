@@ -49,6 +49,7 @@ function App() {
           language: e.language,
           description: e.description,
           avatar_url: e.owner.avatar_url,
+          score:e.score
         }));
         setFetchedApi(items);
       })
@@ -120,6 +121,7 @@ function App() {
                 imageUrl={item.avatar_url}
                 stars={item.stars}
                 language={item.language}
+                score={item.score}
               />
             );
           }}

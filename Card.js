@@ -7,6 +7,7 @@ export default function Card({
   imageUrl,
   stars,
   language,
+  score
 }) {
   return (
     <View
@@ -50,7 +51,8 @@ export default function Card({
           alignItems: 'center',
         }}>
         <Text style={{fontSize: 20}}>☆{stars}</Text>
-        <Text style={{fontSize: 20}}>{language}</Text>
+        <Text style={{fontSize: 20}}>lang:{language}</Text>
+        <Text style={{fontSize: 20}}>score:{score}</Text>
       </View>
     </View>
   );
