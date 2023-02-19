@@ -57,11 +57,11 @@ function App() {
   }, [searching, sortby,order]);
   const searchBasis = [
     {value: 'stars', key: 'stars'},
-    // {value:'score',key:'score'},
     {value: 'created at', key: 'created'},
     {value: 'updated at', key: 'updated'},
     {value: 'name', key: 'name'},
-    {value: 'watchers count', key: 'watchers count'},
+    {value: 'watchers count', key: 'watchers_count'},
+    {value:'score',key:'score'}
   ];
   return (
     <SafeAreaView>
